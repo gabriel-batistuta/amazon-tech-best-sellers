@@ -21,13 +21,7 @@ class DataBase():
     
     def connect(self):
         db_config = self.get_database_config()
-        connection_data = f"""
-            DRIVER={{{db_config['driver']}}};
-            SERVER={db_config['server']};
-            DATABASE={db_config['database']};
-            UID={db_config['username']};
-            PWD={db_config['password']};
-        """
+        connection_data = f"SERVER={db_config['server']};DATABASE={db_config['database']};UID={db_config['username']};PWD={db_config['password']};DRIVER={{{db_config['driver']}}};"
         
         conn = pyodbc.connect(connection_data)
         conn.setdecoding(pyodbc.SQL_WCHAR, encoding='utf-8')
@@ -47,8 +41,17 @@ class DataBase():
         )
         self.cursor.commit()
 
+    def select_table_products(self):
+        self.cursor.execute("""SELECT * FROM produtos;""")
+        return self.cursor.fetchall()
+
+    def insert_in_products(self):
+        self.cursor.execute("""INSERT INTO produtos (name, description, price, quantity) VALUES (?,?,?,?);""", ('teste', 'teste', 10, 10))
+        self.cursor.commit()
+
 if __name__ == '__main__':
     with open('config.json','r') as file:
         config = json.load(file)
     db = DataBase(config)
-    cursor = db.cursor
+    query = db.select_table_products()
+    print(query)
