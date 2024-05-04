@@ -10,7 +10,7 @@ sudo apt install odbc-postgresql
 touch config.json
 echo {
     "server":"localhost",
-    "database":"yourDatabaseNama",
+    "database":"yourDatabaseName",
     "username":"yourUsername",
     "password":"yourPassword",
     "driver":"psqlodbca.so"
