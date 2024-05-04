@@ -1,4 +1,5 @@
 import pyodbc
+from pyodbc import Cursor
 import json
 
 class DataBase():
@@ -10,7 +11,7 @@ class DataBase():
         self.__driver = config['driver']
         self.cursor = self.connect()
 
-    def get_database_config(self):
+    def get_database_config(self) -> dict:
         return {
             "server": self.__server,
             "database": self.__database,
@@ -19,7 +20,7 @@ class DataBase():
             "driver": self.__driver
         }
     
-    def connect(self):
+    def connect(self) -> Cursor:
         db_config = self.get_database_config()
         connection_data = f"SERVER={db_config['server']};DATABASE={db_config['database']};UID={db_config['username']};PWD={db_config['password']};DRIVER={{{db_config['driver']}}};"
         
@@ -30,7 +31,7 @@ class DataBase():
         cursor = conn.cursor()
         return cursor
 
-    def __create_table_products(self):
+    def __create_table_products(self) -> None:
         self.cursor.execute("""CREATE TABLE produtos (
             id BIGSERIAL PRIMARY KEY,
             name VARCHAR(255),
@@ -41,11 +42,11 @@ class DataBase():
         )
         self.cursor.commit()
 
-    def select_table_products(self):
+    def select_table_products(self) -> list:
         self.cursor.execute("""SELECT * FROM produtos;""")
         return self.cursor.fetchall()
 
-    def insert_in_products(self):
+    def insert_in_products(self) -> None:
         self.cursor.execute("""INSERT INTO produtos (name, description, price, quantity) VALUES (?,?,?,?);""", ('teste', 'teste', 10, 10))
         self.cursor.commit()
 
