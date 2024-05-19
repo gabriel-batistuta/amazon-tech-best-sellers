@@ -13,9 +13,11 @@ echo {
     "database":"yourDatabaseName",
     "username":"yourUsername",
     "password":"yourPassword",
-    "driver":"psqlodbca.so"
+    "driver":"YourPostgresDriverName"
 } > config.json
 ```
+- driver on ubuntu: psqlodbcw.so
+- psqlodbca.so is getting error: https://github.com/mkleehammer/pyodbc/issues/169
 
 ```sql
 CREATE DATABASE amazon;
